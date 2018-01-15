@@ -5,12 +5,24 @@ export default class World {
 
 	constructor(size: number){
 		this.grid = new Grid<boolean>(size, size);
+		this.grid.wrapCols = false;
+		this.grid.wrapRows = false;
 		this.grid.fill(false);
 
 		// Insert test data
 		this.grid.insert(true, 9, 10);
 		this.grid.insert(true, 10, 10);
 		this.grid.insert(true, 11, 10);
+
+		this.grid.insert(true, 0, 0);
+		this.grid.insert(true, 1, 0);
+		this.grid.insert(true, 1, 1);
+		this.grid.insert(true, 0, 1);
+
+		this.grid.insert(true, 198, 198);
+		this.grid.insert(true, 199, 198);
+		this.grid.insert(true, 199, 199);
+		this.grid.insert(true, 198, 199);
 	}
 
 	private updateCell(row: number, col:number): boolean {

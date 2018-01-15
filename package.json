@@ -10,12 +10,16 @@
   "license": "MIT",
   "devDependencies": {
     "@types/express": "^4.11.0",
+    "@types/fs-extra": "^5.0.0",
+    "@types/hjson": "^2.4.0",
     "@types/ws": "^3.2.1",
     "typescript": "^2.6.2"
   },
   "dependencies": {
     "2dgrid": "github:Mindar/2dgrid",
     "express": "^4.16.2",
+    "fs-extra": "^5.0.0",
+    "hjson": "^3.1.0",
     "ws": "^3.3.3"
   }
 }

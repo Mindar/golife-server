@@ -5,31 +5,24 @@ import World from './World';
 
 export default class GameClient extends EventEmitter {
 	private socket: WebSocket;
-	private world: World;
 
 	constructor(ws: WebSocket, world: World){
 		super();
 
-		this.world = world;
 		this.socket = ws;
 		this.socket.on('close', (code, reason) => this.emit('close', code, reason));
 		this.socket.on('error', (err) => this.emit('error', err));
 		this.socket.on('message', (data) => this.handleMsg(data));
 	}
 
-	private handleModify(msg: any){
-		for(let change of msg.changes){
-			this.world.getGrid().insert(change.val, change.row, change.col);
-		}
-	}
-
 	private handleMsg(data: WebSocket.Data): void{
 		const msg = JSON.parse(data.toString());
-		switch(msg.action){
-			case 'world.modify':
-				this.handleModify(msg);
-				break;
+		
+		if(typeof msg.cmd === 'string'){
+			this.emit('command', msg.cmd, msg.payload);
 		}
+
+		// Handle game client internal stuff here.
 	}
 
 	public send(msg: string){
@@ -39,5 +32,17 @@ export default class GameClient extends EventEmitter {
 			console.log('Error while sending.');
 			this.emit('close');
 		}
+	}
+
+	public close(){
+		// If readyState is CONNECTING or OPEN, close the socket
+		if(this.socket.readyState <= 1){
+			this.socket.close();
+		}
+	}
+
+	public get isOpen() {
+		if(this.socket.readyState === 1) return true;
+		return false;
 	}
 }
